@@ -1,4 +1,9 @@
 import math
+"""
+    Felipe Amorim de melo
+    Eng da Computação
+    exercicio sobre exponencial, seno e cosseno pelo teorema de taylor
+"""
 
 # colocar o valor de x a ser calculado e y quantas integracoes fazer
 def exp(x,y):
