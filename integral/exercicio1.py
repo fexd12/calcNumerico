@@ -6,25 +6,11 @@ def fx(x):
 def d2fx(x):
     return 9/(6*x-5)**(3/2)
 
-
 def area(a,b):
     return (fx(a) + fx(b))*(b-a)*0.5
 
-def max(a, b, inc):
-    maior = 0
-    temp = 0
-    while True:
-        if(a >= b):
-            break
-        temp = d2fx(a)
-        if(temp > maior):
-            maior = temp
-        a += inc
-    return maior
-
 def erro(a,b, n):
     return ((b-a)**3) * max(a, b, 0.01) * (1/(12*(n**2)))
-
 
 n = 100 
 ini = 1.0
