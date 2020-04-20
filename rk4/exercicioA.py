@@ -25,12 +25,6 @@ def kTres2(x1, x2, k2):
 def kQuatro2(x1, x2, k3):
     return 0.03 * (x1 + k3) - (0.01 + 0.02) * (x2 + k3)
 
-# def fx1(x1,x2):
-#     return 0.02 * x2  - 0.03*x1
-
-# def fx2(x1,x2):
-#     return 0.03 *x1 - (0.02 + 0.01)*x2
-
 h = 0.001
 t = 0.1
 k11 = 0
@@ -48,7 +42,7 @@ x2 = 10
 auxa = 0 
 auxc = 0
 
-erro =0
+erro =500
 
 plt.ioff()
 
