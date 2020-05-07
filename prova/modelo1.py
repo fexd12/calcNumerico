@@ -1,13 +1,16 @@
-import csv
-import os
-import matplotlib.pyplot
+import csv,os,matplotlib.pyplot,requests
 
-dados_confirmed = 'dados/confirmed_global.csv'
-dados_deaths= 'dados/deaths_global.csv'
-dados_recovered= 'dados/recovered_global.csv'
+def baixar_arquivo(url,endereco):
+    response = requests.get(url, stream=True)
+    if response.status_code == requests.codes.OK:
+        with open(endereco+os.path.basename(url.split("?")[0]), 'wb') as novo_arquivo:
+                for parte in response.iter_content(chunk_size=256):
+                    novo_arquivo.write(parte)
+    else:
+        response.raise_for_status()
 
 def delta(x):
-    return int(x[len(x)-2]) - int(x[len(x)-1])
+    return int(x[len(x)-1]) - int(x[len(x)-2])
 
 def abrirArquivo(path):
     with open(path,'r') as confirmed:
@@ -19,7 +22,6 @@ def abrirArquivo(path):
     for e in coluna3:
         x.append(e)
     return x
-
 
 def kUm1(x1, x4):
     return k11 * x4 - (k31+k21)*x1
@@ -33,7 +35,6 @@ def kTres1(x1, x4, k2):
 def kQuatro1(x1, x4, k3):
     return k11 * (x4+k3) - (k31+k21)*(x1 + k3)
 
-
 def kUm2(x1):
     return k31 * x1
 
@@ -46,43 +47,50 @@ def kTres2(x1, k2):
 def kQuatro2(x1, k3):
     return k31 * (x1+k3)
 
-
 def kUm3(x1):
     return k21 * x1
 
-def kDois3(x3, k1):
+def kDois3(x1, k1):
     return k21 * (x1+k1/2)
 
-def kTres3(x3, k2):
+def kTres3(x1, k2):
     return k21 * (x1+k2/2)
 
-def kQuatro3(x3, k3):
+def kQuatro3(x1, k3):
     return k21 * (x1+k3)
 
-
 def kUm4(x4):
-    return - k11 * x4
+    return -1* k11 * x4
 
 def kDois4(x4, k1):
-    return - k11 * (x4+k1/2)
+    return -1* k11 * (x4+k1/2)
 
 def kTres4(x4, k2):
-    return - k11 * (x4+k2/2)
+    return -1* k11 * (x4+k2/2)
 
 def kQuatro4(x4, k3):
-    return - k11 * (x4+k3)
+    return -1* k11 * (x4+k3)
 
+url=["https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
+"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv",
+"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"]
+
+for i in range(0,3):
+    baixar_arquivo(url[i],'dados/')
+    
+dados_confirmed = 'dados/time_series_covid19_confirmed_global.csv'
+dados_deaths= 'dados/time_series_covid19_deaths_global.csv'
+dados_recovered= 'dados/time_series_covid19_recovered_global.csv'
 
 brasil_confirmed = abrirArquivo(dados_confirmed)
 brasil_deaths = abrirArquivo(dados_deaths)
 brasil_recovered = abrirArquivo(dados_recovered)
 
-k11 = delta(brasil_confirmed)
-k31 = delta(brasil_deaths) /k11
-k21 = delta(brasil_recovered) /k11
-
 casos = 209000000 * 0.7 - int(brasil_confirmed[len(brasil_confirmed)-1])
 
+k11 = delta(brasil_confirmed) / casos
+k31 = delta(brasil_deaths) /k11
+k21 = delta(brasil_recovered) /k11
 h = 1
 t = 0
 
@@ -123,7 +131,7 @@ graphX2 = []
 graphX3 = []
 graphX4 = []
 
-while t < 800:
+while t < 20:
     auxX1 = x1
     auxX2 = x2
     auxX3 = x3
@@ -160,6 +168,11 @@ while t < 800:
     x2 = x2 + (rk21 + 2 * rk22 + 2 * rk23 + rk24)/6
     x3 = x3 + (rk31 + 2 * rk32 + 2 * rk33 + rk34)/6
     x4 = x4 + (rk41 + 2 * rk42 + 2 * rk43 + rk44)/6
+
+    k11 = (x1-auxX1) / x4
+    k31 = (x2-auxX2) / x1
+    k21 = (x3-auxX3) / x1
+
     erro = (x1 - auxX1) / auxX1 + (x2 - auxX2) / auxX2 + (x3 - auxX3) / auxX3 + (x4 - auxX4) / auxX4
     t = t + h
 
