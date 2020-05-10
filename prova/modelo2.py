@@ -68,15 +68,17 @@ for i in range(0,3):
     
 dados_confirmed = 'dados/time_series_covid19_confirmed_global.csv'
 dados_deaths= 'dados/time_series_covid19_deaths_global.csv'
+dados_recovered= 'dados/time_series_covid19_recovered_global.csv'
 
 brasil_confirmed = abrirArquivo(dados_confirmed)
 brasil_deaths = abrirArquivo(dados_deaths)
+brasil_recovered = abrirArquivo(dados_recovered)
 
 casos = 209000000 * 0.7 - int(brasil_confirmed[len(brasil_confirmed)-1])
 
-k31 = (casos / delta(brasil_confirmed)) - (delta(brasil_confirmed) / casos)
+k31 =  delta(brasil_confirmed) / casos
 k11 = delta(brasil_deaths) / int(brasil_confirmed[len(brasil_confirmed)-2])
-k21 = (delta(brasil_confirmed) / casos) - (casos / delta(brasil_confirmed))
+k21 = delta(brasil_recovered) / int(brasil_confirmed[len(brasil_confirmed)-2])
 
 h = 1
 t = 0
@@ -111,7 +113,7 @@ graphT = []
 graphX1 = []
 graphX2 = []
 
-while t < 40:
+while t < 70:
     auxX1 = x1
     auxX2 = x2
     auxX3 = x3
@@ -142,12 +144,13 @@ while t < 40:
     x2 = x2 + (rk21 + 2 * rk22 + 2 * rk23 + rk24)/6
     x3 = x3 + (rk31 + 2 * rk32 + 2 * rk33 + rk34)/6
 
-    k21= ((x1-auxX1) / x3) - ((x3-auxX3) / x1)
+    k21= (x1-auxX1) / x3
     k11 = (x2-auxX2) / auxX1
-    k31 = ((x3-auxX3) / x1) - ((x1-auxX1) / x3)
+    k31 = (x3-auxX3) / x1
 
     erro = (x1 - auxX1) / auxX1 + (x2 - auxX2) / auxX2 + (x3 - auxX3) / auxX3
     t = t + h
+    
 
 matplotlib.pyplot.plot(graphT,graphX1,label='C(t)')
 matplotlib.pyplot.plot(graphT,graphX2,label='M(t)')
