@@ -12,6 +12,9 @@ def baixar_arquivo(url,endereco):
 def delta(x):
     return int(x[len(x)-1]) - int(x[len(x)-2])
 
+def media(x):
+    return int(x[len(x)-1]) - int(x[len(x)-2]) / 2
+
 def abrirArquivo(path):
     with open(path,'r') as confirmed:
         leitor=csv.DictReader(confirmed,delimiter=',')
@@ -89,8 +92,8 @@ brasil_recovered = abrirArquivo(dados_recovered)
 casos = 209000000 * 0.7 - int(brasil_confirmed[len(brasil_confirmed)-1])
 
 k11 = delta(brasil_confirmed) / casos
-k31 = delta(brasil_deaths) / int(brasil_confirmed[len(brasil_confirmed)-2])
-k21 = delta(brasil_recovered) / int(brasil_confirmed[len(brasil_confirmed)-2])
+k31 = media(brasil_deaths)
+k21 = media(brasil_recovered)
 h = 1
 t = 0
 
@@ -168,10 +171,6 @@ while t < 70:
     x2 = x2 + (rk21 + 2 * rk22 + 2 * rk23 + rk24)/6
     x3 = x3 + (rk31 + 2 * rk32 + 2 * rk33 + rk34)/6
     x4 = x4 + (rk41 + 2 * rk42 + 2 * rk43 + rk44)/6
-
-    k11 = (x1-auxX1) / x4
-    k31 = (x2-auxX2) / auxX1
-    k21 = (x3-auxX3) / auxX1
 
     erro = (x1 - auxX1) / auxX1 + (x2 - auxX2) / auxX2 + (x3 - auxX3) / auxX3 + (x4 - auxX4) / auxX4
     t = t + h

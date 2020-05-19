@@ -1,4 +1,5 @@
-import csv,os,matplotlib.pyplot,requests
+import os,matplotlib.pyplot,requests
+import pandas as pd
 
 def baixar_arquivo(url,endereco):
     response = requests.get(url, stream=True)
@@ -10,18 +11,28 @@ def baixar_arquivo(url,endereco):
         response.raise_for_status()
 
 def delta(x):
-    return int(x[len(x)-1]) - int(x[len(x)-2])
+    return int(x[x.size-1]) - int(x[x.size-2])
+
+def media(x):
+    return int(x[len(x)-1]) - int(x[len(x)-2]) / 2
 
 def abrirArquivo(path):
-    with open(path,'r') as confirmed:
-        leitor=csv.DictReader(confirmed,delimiter=',')
-        for coluna in leitor:
-            if coluna['Country/Region'] == 'Brazil':
-                coluna3 = coluna
-    x=[]
-    for e in coluna3.values():
-        x.append(e)
-    return x
+    # with open(path,'r') as confirmed:
+    #     leitor=csv.DictReader(confirmed,delimiter=',')
+    #     for coluna in leitor:
+    #         if coluna['Country/Region'] == 'Brazil':
+    #             coluna3 = coluna
+    # x=[]
+    # for e in coluna3.values():
+    #     x.append(e)
+    # return x
+    leitor = pd.read_csv(path)
+    leitor = leitor.loc[leitor['Country/Region'] == 'Brazil']
+    leitor.drop('Province/State', inplace=True, axis=1)
+    leitor.drop('Country/Region', inplace=True, axis=1)
+    leitor.drop('Lat', inplace=True, axis=1)
+    leitor.drop('Long', inplace=True, axis=1)
+    return leitor.to_numpy()
 
 def kUm1(x1, x3):
     return k21 * x3 - (k11+k31)*x1
@@ -74,11 +85,15 @@ brasil_confirmed = abrirArquivo(dados_confirmed)
 brasil_deaths = abrirArquivo(dados_deaths)
 brasil_recovered = abrirArquivo(dados_recovered)
 
-casos = 209000000 * 0.7 - int(brasil_confirmed[len(brasil_confirmed)-1])
+casos = 209000000 * 0.7 - brasil_confirmed.item((0,brasil_confirmed.size-1))
 
-k31 =  delta(brasil_confirmed) / casos
-k11 = delta(brasil_deaths) / int(brasil_confirmed[len(brasil_confirmed)-2])
-k21 = delta(brasil_recovered) / int(brasil_confirmed[len(brasil_confirmed)-2])
+k31=brasil_confirmed.mean()
+k11=brasil_deaths.mean()
+k21=brasil_recovered.mean()
+
+#k31 = delta(brasil_confirmed) / casos
+#k11 = media(brasil_deaths)
+#k21 = media(brasil_recovered)
 
 h = 1
 t = 0
@@ -99,8 +114,8 @@ rk41 = 0
 rk42 = 0
 rk43 = 0
 
-x1= int(brasil_confirmed[len(brasil_confirmed)-1])
-x2= int(brasil_deaths[len(brasil_deaths)-1])
+x1= brasil_confirmed.item(brasil_confirmed.size-1)
+x2= brasil_deaths.item(brasil_deaths.size-1)
 x3= casos
 
 auxX1 = 0
@@ -143,10 +158,6 @@ while t < 70:
     x1 = x1 + (rk11 + 2 * rk12 + 2 * rk13 + rk14)/6
     x2 = x2 + (rk21 + 2 * rk22 + 2 * rk23 + rk24)/6
     x3 = x3 + (rk31 + 2 * rk32 + 2 * rk33 + rk34)/6
-
-    k21= (x1-auxX1) / x3
-    k11 = (x2-auxX2) / auxX1
-    k31 = (x3-auxX3) / x1
 
     erro = (x1 - auxX1) / auxX1 + (x2 - auxX2) / auxX2 + (x3 - auxX3) / auxX3
     t = t + h
