@@ -1,5 +1,5 @@
 import math
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 
 
 def alphaN(vm):
@@ -27,7 +27,7 @@ def betaH(vm):
 
 
 def densidadeCorrente(m, n, h, vm):
-    return ((1 / cm) * (ist - gna * math.pow(m, 3)*h * (vm - ena) - gk*math.pow(n, 4)*(vm-ek) - gl*(vm - ev)))
+    return ((gna * math.pow(m, 3)*h * (vm - ena) + gk*math.pow(n, 4)*(vm-ek) + gl*(vm - ev)))
 
 
 def kUm1(vm):  # n
@@ -35,15 +35,15 @@ def kUm1(vm):  # n
 
 
 def kDois1(vm, k1):
-    return alphaN(vm + k1/2) * (1 - n) - betaN(vm + k1/2) * n
+    return alphaN(vm) * (1 - n + k1/2) - betaN(vm ) * (n + k1/2)
 
 
 def kTres1(vm, k2):
-    return alphaN(vm + k2/2) * (1 - n) - betaN(vm + k2/2) * n
+    return alphaN(vm ) * (1 - n + k2/2) - betaN(vm) * (n + k2/2)
 
 
 def kQuatro1(vm, k3):
-    return alphaN(vm + k3) * (1 - n) - betaN(vm + k3) * n
+    return alphaN(vm ) * (1 - n + k3) - betaN(vm + k3) * (n + k3)
 
 
 def kUm2(vm):  # m
@@ -51,15 +51,15 @@ def kUm2(vm):  # m
 
 
 def kDois2(vm, k1):
-    return alphaM(vm + k1/2) * (1 - m) - betaM(vm + k1/2) * m
+    return alphaM(vm ) * (1 - m + k1/2) - betaM(vm ) * (m + k1/2)
 
 
 def kTres2(vm, k2):
-    return alphaM(vm + k2/2) * (1 - m) - betaM(vm + k2/2) * m
+    return alphaM(vm ) * (1 - m + k2/2) - betaM(vm ) * (m + k2/2)
 
 
 def kQuatro2(vm, k3):
-    return alphaM(vm + k3) * (1 - m) - betaM(vm + k3) * m
+    return alphaM(vm ) * (1 - m + k3) - betaM(vm ) * (m + k3)
 
 
 def kUm3(vm):  # h
@@ -67,35 +67,35 @@ def kUm3(vm):  # h
 
 
 def kDois3(vm, k1):
-    return alphaH(vm + k1/2) * (1 - h) - betaH(vm + k1/2) * h
+    return alphaH(vm ) * (1 - h + k1/2) - betaH(vm ) * (h + k1/2)
 
 
 def kTres3(vm, k2):
-    return alphaH(vm + k2/2) * (1 - h) - betaH(vm + k2/2) * h
+    return alphaH(vm ) * (1 - h + k2/2) - betaH(vm ) * (h + k2/2)
 
 
 def kQuatro3(vm, k3):
-    return alphaH(vm + k3) * (1 - h) - betaH(vm + k3) * h
+    return alphaH(vm ) * (1 - h + k3) - betaH(vm) * (h+ k3)
 
 
 def kUm4(vm):  # i
-    
-    return densidadeCorrente(m,n,h,vm)
+
+    return densidadeCorrente(m, n, h, vm)
 
 
 def kDois4(vm, k1):
-    return densidadeCorrente(m,n,h,vm + k1 / 2)
+    return densidadeCorrente(m+ k1 / 2, n+ k1 / 2, h+ k1 / 2, vm )
 
 
 def kTres4(vm, k2):
-    return densidadeCorrente(m,n,h,vm + k2 / 2)
+    return densidadeCorrente(m+ k2 / 2, n+ k2 / 2, h+ k2 / 2, vm )
 
 
 def kQuatro4(vm, k3):
-    return densidadeCorrente(m,n,h,vm + k3)
+    return densidadeCorrente(m+ k3, n+ k3, h+ k3, vm )
 
 
-matplotlib.pyplot.ioff()
+plt.ioff()
 
 gk = 3.60
 gna = 12.0
@@ -112,7 +112,7 @@ ist = 1 * math.pow(10, -6)
 n = 0.3176
 m = 0.0529
 h = 0.5961
-i=0
+i = 0
 
 
 rk11 = 0
@@ -179,13 +179,14 @@ while t < 10:
     graphH.append(h)
     graphI.append(i)
 
+    print(f't:{t} || M:{m} || N:{n} || H:{h}')
+
     t = t + g
 
-# matplotlib.pyplot.plot(graphT, graphN, label='n(t)')
-# matplotlib.pyplot.plot(graphT, graphM, label='m(t)')
-# matplotlib.pyplot.plot(graphT, graphH, label='h(t)')
-matplotlib.pyplot.plot(graphVM, graphI, label='i(t)')
-matplotlib.pyplot.xlabel('tempo (t)')
-matplotlib.pyplot.ylabel('valores i(t)')
-matplotlib.pyplot.legend()
-matplotlib.pyplot.show()
+# plt.plot(graphT, graphM, label='m(t)')
+# plt.plot(graphT, graphH, label='h(t)')
+plt.plot(graphT, graphN, label='n(t)')
+plt.xlabel('tempo (t)')
+plt.ylabel('valores m(t),h(t),n(t)')
+plt.legend()
+plt.show()
