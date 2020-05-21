@@ -30,69 +30,69 @@ def densidadeCorrente(m, n, h, vm):
     return ((gna * math.pow(m, 3)*h * (vm - ena) + gk*math.pow(n, 4)*(vm-ek) + gl*(vm - ev)))
 
 
-def kUm1(vm):  # n
-    return alphaN(vm) * (1 - n) - betaN(vm) * n
+# def kUm1(vm):  # n
+#     return alphaN(vm) * (1 - n) - betaN(vm) * n
 
 
-def kDois1(vm, k1):
-    return alphaN(vm) * (1 - n + k1/2) - betaN(vm ) * (n + k1/2)
+# def kDois1(vm, k1):
+#     return alphaN(vm) * (1 - n + k1/2) - betaN(vm) * (n + k1/2)
 
 
-def kTres1(vm, k2):
-    return alphaN(vm ) * (1 - n + k2/2) - betaN(vm) * (n + k2/2)
+# def kTres1(vm, k2):
+#     return alphaN(vm) * (1 - n + k2/2) - betaN(vm) * (n + k2/2)
 
 
-def kQuatro1(vm, k3):
-    return alphaN(vm ) * (1 - n + k3) - betaN(vm + k3) * (n + k3)
+# def kQuatro1(vm, k3):
+#     return alphaN(vm) * (1 - n + k3) - betaN(vm) * (n + k3)
 
 
-def kUm2(vm):  # m
-    return alphaM(vm) * (1 - m) - betaM(vm) * m
+# def kUm2(vm):  # m
+#     return alphaM(vm) * (1 - m) - betaM(vm) * m
 
 
-def kDois2(vm, k1):
-    return alphaM(vm ) * (1 - m + k1/2) - betaM(vm ) * (m + k1/2)
+# def kDois2(vm, k1):
+#     return alphaM(vm ) * (1 - m + k1/2) - betaM(vm ) * (m + k1/2)
 
 
-def kTres2(vm, k2):
-    return alphaM(vm ) * (1 - m + k2/2) - betaM(vm ) * (m + k2/2)
+# def kTres2(vm, k2):
+#     return alphaM(vm ) * (1 - m + k2/2) - betaM(vm ) * (m + k2/2)
 
 
-def kQuatro2(vm, k3):
-    return alphaM(vm ) * (1 - m + k3) - betaM(vm ) * (m + k3)
+# def kQuatro2(vm, k3):
+#     return alphaM(vm ) * (1 - m + k3) - betaM(vm ) * (m + k3)
 
 
-def kUm3(vm):  # h
-    return alphaH(vm) * (1 - h) - betaH(vm) * h
+# def kUm3(vm):  # h
+#     return alphaH(vm) * (1 - h) - betaH(vm) * h
 
 
-def kDois3(vm, k1):
-    return alphaH(vm ) * (1 - h + k1/2) - betaH(vm ) * (h + k1/2)
+# def kDois3(vm, k1):
+#     return alphaH(vm ) * (1 - h + k1/2) - betaH(vm ) * (h + k1/2)
 
 
-def kTres3(vm, k2):
-    return alphaH(vm ) * (1 - h + k2/2) - betaH(vm ) * (h + k2/2)
+# def kTres3(vm, k2):
+#     return alphaH(vm ) * (1 - h + k2/2) - betaH(vm ) * (h + k2/2)
 
 
-def kQuatro3(vm, k3):
-    return alphaH(vm ) * (1 - h + k3) - betaH(vm) * (h+ k3)
+# def kQuatro3(vm, k3):
+#     return alphaH(vm ) * (1 - h + k3) - betaH(vm) * (h+ k3)
 
 
-def kUm4(vm):  # i
+# def kUm4(vm):  # i
 
-    return densidadeCorrente(m, n, h, vm)
-
-
-def kDois4(vm, k1):
-    return densidadeCorrente(m+ k1 / 2, n+ k1 / 2, h+ k1 / 2, vm )
+#     return densidadeCorrente(m, n, h, vm)
 
 
-def kTres4(vm, k2):
-    return densidadeCorrente(m+ k2 / 2, n+ k2 / 2, h+ k2 / 2, vm )
+# def kDois4(vm, k1):
+#     return densidadeCorrente(m+ k1 / 2, n+ k1 / 2, h+ k1 / 2, vm )
 
 
-def kQuatro4(vm, k3):
-    return densidadeCorrente(m+ k3, n+ k3, h+ k3, vm )
+# def kTres4(vm, k2):
+#     return densidadeCorrente(m+ k2 / 2, n+ k2 / 2, h+ k2 / 2, vm )
+
+
+# def kQuatro4(vm, k3):
+#     return densidadeCorrente(m+ k3, n+ k3, h+ k3, vm )
 
 
 plt.ioff()
@@ -147,30 +147,30 @@ g = 0.1
 
 while t < 10:
 
-    rk11 = g*kUm1(vm)
-    rk21 = g*kUm2(vm)
-    rk31 = g*kUm3(vm)
-    rk41 = g*kUm4(vm)
+    # rk11 = g*kUm1(vm)
+    # rk21 = g*kUm2(vm)
+    # rk31 = g*kUm3(vm)
+    # rk41 = g*kUm4(vm)
 
-    rk12 = g*kDois1(vm, rk11)
-    rk22 = g*kDois2(vm, rk21)
-    rk32 = g*kDois3(vm, rk31)
-    rk42 = g*kDois4(vm, rk41)
+    # rk12 = g*kDois1(vm, rk11)
+    # rk22 = g*kDois2(vm, rk21)
+    # rk32 = g*kDois3(vm, rk31)
+    # rk42 = g*kDois4(vm, rk41)
 
-    rk13 = g*kTres1(vm, rk12)
-    rk23 = g*kTres2(vm, rk22)
-    rk33 = g*kTres3(vm, rk32)
-    rk43 = g*kTres4(vm, rk42)
+    # rk13 = g*kTres1(vm, rk12)
+    # rk23 = g*kTres2(vm, rk22)
+    # rk33 = g*kTres3(vm, rk32)
+    # rk43 = g*kTres4(vm, rk42)
 
-    rk14 = g*kQuatro1(vm, rk13)
-    rk24 = g*kQuatro2(vm, rk23)
-    rk34 = g*kQuatro3(vm, rk33)
-    rk44 = g*kQuatro4(vm, rk43)
+    # rk14 = g*kQuatro1(vm, rk13)
+    # rk24 = g*kQuatro2(vm, rk23)
+    # rk34 = g*kQuatro3(vm, rk33)
+    # rk44 = g*kQuatro4(vm, rk43)
 
-    n = n + (rk11 + 2 * rk12 + 2 * rk13 + rk14)/6
-    m = m + (rk21 + 2 * rk22 + 2 * rk23 + rk24)/6
-    h = h + (rk31 + 2 * rk32 + 2 * rk33 + rk34)/6
-    i = i + (rk41 + 2 * rk42 + 2 * rk43 + rk44)/6
+    # n = n + (rk11 + 2 * rk12 + 2 * rk13 + rk14)/6
+    # m = m + (rk21 + 2 * rk22 + 2 * rk23 + rk24)/6
+    # h = h + (rk31 + 2 * rk32 + 2 * rk33 + rk34)/6
+    # i = i + (rk41 + 2 * rk42 + 2 * rk43 + rk44)/6
 
     graphT.append(t)
     graphVM.append(vm)
@@ -183,9 +183,9 @@ while t < 10:
 
     t = t + g
 
-# plt.plot(graphT, graphM, label='m(t)')
-# plt.plot(graphT, graphH, label='h(t)')
-plt.plot(graphT, graphN, label='n(t)')
+plt.plot(graphVM, graphM, label='m(t)')
+plt.plot(graphVM, graphH, label='h(t)')
+plt.plot(graphVM, graphN, label='n(t)')
 plt.xlabel('tempo (t)')
 plt.ylabel('valores m(t),h(t),n(t)')
 plt.legend()
